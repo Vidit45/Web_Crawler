@@ -1,4 +1,4 @@
-# Principles of Programming Languages - Group 23 - Web Crawlers in C++ v. Rust
+# Principles of Programming Languages - Group 23 - Web Crawlers in C++ vs Rust
 
 ## Milestone 1:
 
