@@ -2,19 +2,20 @@
 #include <curl/curl.h>
 #include <vector>
 #include <regex>
+using namespace std;
 
 // Function to perform an HTTP GET request using cURL
-size_t writeCallback(char* contents, size_t size, size_t nmemb, std::string* data) {
+size_t writeCallback(char* contents, size_t size, size_t nmemb, string* data) {
     // Appending the contents retrieved from the URL to a string
     data->append(contents, size * nmemb);
     return size * nmemb;
 }
 
 // Function to retrieve HTML content from a given URL
-std::string getHTML(const std::string& url) {
+string getHTML(const string& url) {
     CURL* curl;
     CURLcode res;
-    std::string readBuffer;
+    string readBuffer;
 
     // Initialize cURL
     curl = curl_easy_init();
@@ -34,14 +35,14 @@ std::string getHTML(const std::string& url) {
 }
 
 // Function to extract URLs from the HTML content of a webpage
-std::vector<std::string> extractUrls(const std::string& html) {
-    std::vector<std::string> urls;
-    std::regex url_regex("<a href=\"(.*?)\"");
+vector<string> extractUrls(const string& html) {
+    vector<string> urls;
+    regex url_regex("<a href=\"(.*?)\"");
     // Find all matches of the URL pattern in the HTML content
-    std::sregex_iterator it(html.begin(), html.end(), url_regex);
-    std::sregex_iterator end;
+    sregex_iterator it(html.begin(), html.end(), url_regex);
+    sregex_iterator end;
     for (; it != end; ++it) {
-        std::smatch match = *it;
+        smatch match = *it;
         // Add the matched URL to the vector of URLs
         urls.push_back(match.str(1));
     }
@@ -49,18 +50,18 @@ std::vector<std::string> extractUrls(const std::string& html) {
 }
 
 // Function to crawl through URLs recursively up to a certain depth
-void crawl(const std::string& url, int depth) {
+void crawl(const string& url, int depth) {
     if (depth <= 0) {
         return;
     }
     // Retrieve HTML content from the current URL
-    std::string html = getHTML(url);
+    string html = getHTML(url);
     // Extract URLs from the HTML content
-    std::vector<std::string> urls = extractUrls(html);
+    vector<string> urls = extractUrls(html);
     // Iterate through the extracted URLs
-    for (const std::string &u : urls) {
+    for (const string &u : urls) {
         // Print the found URL 
-        std::cout << "Found URL: " << u << std::endl;
+        cout << "Found URL: " << u << endl;
         // Recursively crawl through the found URL with reduced depth
         crawl(u, depth - 1);
     }
@@ -69,7 +70,7 @@ void crawl(const std::string& url, int depth) {
 // Main function to initiate the crawling process
 int main() {
     // Define the starting URL for the web crawling process
-    std::string startingURL = "https://google.com"; // Enter the starting URL here
+    string startingURL = "https://google.com"; // Enter the starting URL here
     // Define the maximum depth for traversal
     int maxDepth = 1;
 
